@@ -56,7 +56,7 @@ class ScaleUtil {
 
 class DrawingUtil {
 
-    static drawSBNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+    static drawSBMNode(context : CanvasRenderingContext2D, scale : number) {
         const size : number = Math.min(w, h) / rectSizeFactor
         const boxSize : number = Math.min(w, h) / boxSizeFactor
         var deg : number = 0
@@ -122,5 +122,22 @@ class Animator {
             this.animated = false
             clearInterval(this.interval)
         }
+    }
+}
+
+class SBMNode {
+
+    state : State = new State()
+
+    draw(context : CanvasRenderingContext2D) {
+        DrawingUtil.drawSBMNode(context, this.state.scale)
+    }
+
+    update(cb : Function) {
+        this.state.update(cb)
+    }
+
+    startUpdating(cb : Function) {
+        this.state.startUpdating(cb)
     }
 }
