@@ -54,7 +54,7 @@ class ScaleUtil {
     }
 
     static updateValue(scale : number, dir : number) : number {
-        return scale + scGap * dir
+        return scale + scGap * dir / parts
     }
 }
 
@@ -67,9 +67,12 @@ class DrawingUtil {
         var x : number = 0
         for (var i = 0; i < parts; i++) {
             const sc : number = ScaleUtil.divideScale(scale, i, parts)
-            x = (size) * sc
-            deg += Math.PI/2 * Math.floor(sc)
+            if (sc > 0 && sc < 1) {
+              x = (size) * sc
+            }
+            deg += Math.PI / 2 * Math.floor(sc)
         }
+        console.log(`${deg}, ${x}`)
         context.save()
         context.translate(w / 2, h / 2)
         context.lineCap = 'round'
@@ -80,7 +83,9 @@ class DrawingUtil {
 
         context.save()
         context.rotate(deg)
+        context.translate(-size / 2, -size / 2)
         context.fillRect(x, -boxSize, boxSize, boxSize)
+        context.restore()
         context.restore()
     }
 }
