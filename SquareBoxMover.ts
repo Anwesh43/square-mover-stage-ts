@@ -141,3 +141,24 @@ class SBMNode {
         this.state.startUpdating(cb)
     }
 }
+
+class Renderer {
+    sbm : SBMNode = new SBMNode()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.sbm.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.sbm.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.sbm.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
